@@ -1,61 +1,45 @@
-import CategoriesDetails from "./CategoriesDetails";
-import PropTypes from "prop-types";
+import React from "react";
 
-const ProductCard = ({
-  className = "",
-  state = "Default",
-  categoriesDetailsMarginTop,
-}) => {
+const ProductCard = ({ product }) => {
+  const styles = {
+    card: { flex: "0 0 300px", display: "flex", flexDirection: "column" },
+    imgBox: {
+      width: "100%",
+      aspectRatio: "1/1",
+      backgroundColor: "#F2F2F2",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: "15px",
+      overflow: "hidden"
+    },
+    img: {
+      width: "100%",
+      height: "100%",
+      objectFit: "cover" // Foto produk full di dalem kotak
+    },
+    infoRow: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" },
+    category: { fontSize: "12px", fontWeight: "700", color: "#888" },
+    rating: { display: "flex", alignItems: "center", gap: "4px", fontSize: "12px", fontWeight: "700" },
+    name: { fontSize: "16px", fontWeight: "900", textTransform: "uppercase", margin: "0 0 5px 0" },
+    price: { fontSize: "14px", fontWeight: "700" }
+  };
+
   return (
-    <section
-      className={`h-[560px] w-[290px] shrink-0 flex flex-col items-start pt-0 px-0 pb-[110px] box-border relative isolate text-left text-[10px] text-[#000] font-[Montserrat] ${className}`}
-    >
-      <img
-        className="w-[290px] h-[370px] absolute !!m-[0 important] top-[0px] left-[0px] object-cover z-[1]"
-        alt=""
-        src="/Rectangle-3@2x.png"
-      />
-      <div className="w-[290px] h-[370px] flex items-start pt-[307px] px-[63px] pb-[30px] box-border relative isolate z-[3]">
-        <div className="h-full w-full absolute !!m-[0 important] top-[0px] right-[0px] bottom-[0px] left-[0px] z-[0] shrink-0">
-          <img
-            className="absolute h-full w-full top-[0px] right-[0px] bottom-[0px] left-[0px] max-w-full overflow-hidden max-h-full object-cover"
-            alt=""
-            src="/Rectangle-3@2x.png"
-          />
-          <div className="absolute h-full w-full top-[0px] right-[0px] bottom-[0px] left-[0px] bg-[#000] opacity-[0]" />
-        </div>
-        <div className="h-[33px] w-[164px] flex items-end py-[2.2px] pl-[25px] pr-[7.7px] box-border relative isolate gap-[15.3px] opacity-[0] z-[1] shrink-0">
-          <div className="h-[calc(100%_+_4px)] w-[calc(100%_+_4px)] absolute !!m-[0 important] top-[0px] right-[-4px] bottom-[-4px] left-[0px] rounded-[15px] bg-[#fff] border-[#000] border-solid border-[2px] box-border z-[0] shrink-0" />
-          <div className="h-[21.8px] w-4 flex flex-col items-start justify-end pt-0 px-0 pb-[5.8px] box-border z-[1] shrink-0">
-            <img
-              className="w-4 relative rounded-[15px] max-h-full"
-              alt=""
-              src="/mdi-cart.svg"
-            />
-          </div>
-          <b className="h-[28.6px] w-[100px] relative tracking-[0.5px] leading-10 uppercase flex items-center z-[2] shrink-0">
-            Add to cart
-          </b>
+    <div style={styles.card}>
+      <div style={styles.imgBox}>
+        <img src={product.image} alt={product.name} style={styles.img} />
+      </div>
+      <div style={styles.infoRow}>
+        <span style={styles.category}>{product.category}</span>
+        <div style={styles.rating}>
+          <span style={{ color: "#FFCC00" }}>★</span> {product.rating}
         </div>
       </div>
-      <div className="w-[285.3px] h-[89px] flex flex-col items-start z-[2] mt-[-9px] relative text-[15px]">
-        <CategoriesDetails
-          categoriesDetailsMarginTop={categoriesDetailsMarginTop}
-        />
-        <b className="w-[57.3px] h-[39px] relative tracking-[0.5px] leading-10 uppercase flex items-center z-[2] mt-[-14px]">
-          150000
-        </b>
-      </div>
-    </section>
+      <h3 style={styles.name}>{product.name}</h3>
+      <p style={styles.price}>{product.price}</p>
+    </div>
   );
-};
-
-ProductCard.propTypes = {
-  className: PropTypes.string,
-  categoriesDetailsMarginTop: PropTypes.any,
-
-  /** Variant props */
-  state: PropTypes.string,
 };
 
 export default ProductCard;

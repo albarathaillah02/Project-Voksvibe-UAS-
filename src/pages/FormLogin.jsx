@@ -16,15 +16,21 @@ const Masuk = memo(() => {
       minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
+      // Tambahkan padding top sebesar tinggi header agar konten tidak nyelip di bawah header
+      paddingTop: "80px", 
+      boxSizing: "border-box",
     },
     loginContainer: {
       display: "flex",
       flex: 1,
-      minHeight: "80vh",
+      // Gunakan minHeight calc agar pas memenuhi sisa layar tanpa kebesaran
+      minHeight: "calc(100vh - 80px)",
+      flexWrap: "wrap", // Agar aman di layar kecil/mobile
     },
     // Sisi Kiri (Hitam)
     leftSection: {
       flex: 1,
+      minWidth: "450px", // Biar section hitam tidak terlalu kecil
       backgroundColor: "#111",
       color: "#fff",
       display: "flex",
@@ -48,27 +54,29 @@ const Masuk = memo(() => {
       maxWidth: "350px",
       lineHeight: "1.6",
     },
-    // Sisi Kanan (Form Putih)
+    // Sisi Kanan (Form Putih) - INI YANG DIPERBAIKI AGAR TIDAK CROP
     rightSection: {
       flex: 1,
-      padding: "60px 80px",
+      minWidth: "450px",
+      padding: "40px 80px", // Padding atas dikurangi dari 60px ke 40px
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
+      justifyContent: "center", // Form akan selalu di tengah vertikal
+      boxSizing: "border-box",
     },
     loginTitle: {
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: "800",
       fontSize: "42px",
       fontStyle: "italic",
-      marginBottom: "10px",
+      marginBottom: "5px",
       color: "#000",
     },
     loginSubtitle: {
       fontFamily: "'Poppins', sans-serif",
-      fontSize: "16px",
+      fontSize: "15px",
       color: "#333",
-      marginBottom: "40px",
+      marginBottom: "30px",
     },
     label: {
       display: "block",
@@ -80,11 +88,12 @@ const Masuk = memo(() => {
     inputField: {
       width: "100%",
       padding: "15px",
-      marginBottom: "25px",
+      marginBottom: "20px", // Jarak antar input dikurangi sedikit
       border: "1px solid #ccc",
       borderRadius: "4px",
       fontFamily: "'Poppins', sans-serif",
       fontSize: "14px",
+      boxSizing: "border-box",
     },
     btnLogin: {
       width: "100%",
@@ -145,10 +154,14 @@ const Masuk = memo(() => {
           <h2 style={styles.loginTitle}>MASUK</h2>
           <p style={styles.loginSubtitle}>Selamat Datang! Masukkan Detail Login Anda.</p>
           
-          <form>
-            <div style={{ display: "flex", gap: "30px", marginBottom: "30px", fontFamily: "'Poppins', sans-serif" }}>
-              <label style={{ cursor: "pointer" }}><input type="radio" name="role" /> Admin</label>
-              <label style={{ cursor: "pointer" }}><input type="radio" name="role" /> User</label>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div style={{ display: "flex", gap: "30px", marginBottom: "25px", fontFamily: "'Poppins', sans-serif" }}>
+              <label style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
+                <input type="radio" name="role" /> Admin
+              </label>
+              <label style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
+                <input type="radio" name="role" defaultChecked /> User
+              </label>
             </div>
 
             <div>
@@ -171,10 +184,10 @@ const Masuk = memo(() => {
         </div>
       </div>
 
-      {/* 3. Footer (Dihadirkan Kembali) */}
+      {/* 3. Footer */}
       <footer style={styles.footer}>
         <div style={{ flex: "1", minWidth: "250px" }}>
-          <h2 style={{ ...styles.footerTitle, fontStyle: "italic", fontSize: "28px", color: "#FFD700" }}>VOKSVIBE</h2>
+          <h2 style={{ ...styles.footerTitle, fontStyle: "italic", fontSize: "28px", color: "#FFD700", margin: 0, marginBottom: "25px" }}>VOKSVIBE</h2>
           <p style={{ color: "#aaa", fontSize: "14px", maxWidth: "300px", lineHeight: "1.6" }}>
             Streetwear brand from Indonesia. Stay authentic, stay vibe.
           </p>
