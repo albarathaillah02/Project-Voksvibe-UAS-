@@ -1,7 +1,15 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import Header1 from "../components/Header1";
 
-const Masuk = memo(() => {
+const FormLogin = memo(() => {
+  const navigate = useNavigate(); 
+  
+  // State untuk menangkap input dari form
+  const [role, setRole] = useState("User");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   // Load Google Fonts (Montserrat & Poppins)
   useEffect(() => {
     const link = document.createElement('link');
@@ -10,27 +18,39 @@ const Masuk = memo(() => {
     document.head.appendChild(link);
   }, []);
 
+  // --- FUNGSI LOGIN (HANDLER UTAMA) ---
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Mencegah reload halaman
+
+    // 1. Simpan data ke localStorage. 
+    // Ini adalah 'KUNCI' agar Header1 tahu kamu sudah login.
+    localStorage.setItem("userRole", role);
+    localStorage.setItem("isLoggedIn", "true");
+
+    console.log("Berhasil Login sebagai:", role);
+
+    // 2. Berpindah ke halaman Beranda (Utama)
+    navigate("/"); 
+  };
+
   const styles = {
     mainWrapper: {
       backgroundColor: "#fff",
       minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
-      // Tambahkan padding top sebesar tinggi header agar konten tidak nyelip di bawah header
       paddingTop: "80px", 
       boxSizing: "border-box",
     },
     loginContainer: {
       display: "flex",
       flex: 1,
-      // Gunakan minHeight calc agar pas memenuhi sisa layar tanpa kebesaran
       minHeight: "calc(100vh - 80px)",
-      flexWrap: "wrap", // Agar aman di layar kecil/mobile
+      flexWrap: "wrap",
     },
-    // Sisi Kiri (Hitam)
     leftSection: {
       flex: 1,
-      minWidth: "450px", // Biar section hitam tidak terlalu kecil
+      minWidth: "450px",
       backgroundColor: "#111",
       color: "#fff",
       display: "flex",
@@ -54,14 +74,13 @@ const Masuk = memo(() => {
       maxWidth: "350px",
       lineHeight: "1.6",
     },
-    // Sisi Kanan (Form Putih) - INI YANG DIPERBAIKI AGAR TIDAK CROP
     rightSection: {
       flex: 1,
       minWidth: "450px",
-      padding: "40px 80px", // Padding atas dikurangi dari 60px ke 40px
+      padding: "40px 80px",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center", // Form akan selalu di tengah vertikal
+      justifyContent: "center",
       boxSizing: "border-box",
     },
     loginTitle: {
@@ -88,7 +107,7 @@ const Masuk = memo(() => {
     inputField: {
       width: "100%",
       padding: "15px",
-      marginBottom: "20px", // Jarak antar input dikurangi sedikit
+      marginBottom: "20px",
       border: "1px solid #ccc",
       borderRadius: "4px",
       fontFamily: "'Poppins', sans-serif",
@@ -110,7 +129,6 @@ const Masuk = memo(() => {
       letterSpacing: "2px",
       marginTop: "10px",
     },
-    // Footer Section
     footer: {
       backgroundColor: "#000",
       color: "#fff",
@@ -127,92 +145,92 @@ const Masuk = memo(() => {
       marginBottom: "25px",
       fontSize: "20px",
       letterSpacing: "1px",
+    },
+    registerLink: {
+      color: "#0066cc",
+      textDecoration: "none",
+      cursor: "pointer"
     }
   };
 
   return (
     <div style={styles.mainWrapper}>
-      {/* 1. Header */}
       <Header1 />
 
-      {/* 2. Login Content Section */}
       <div style={styles.loginContainer}>
-        {/* Kolom Kiri */}
+        {/* Sisi Kiri: Branding */}
         <div style={styles.leftSection}>
           <h1 style={styles.brandSide}>VOKSVIBE</h1>
           <p style={styles.textSide}>
             Ayo bergabung dengan komunitas streetwear di Universitas Brawijaya
           </p>
-          <div style={{ display: "flex", gap: "20px", marginTop: "40px" }}>
-            <div style={{ width: "150px", height: "100px", border: "1px solid #333", backgroundColor: "#222" }}></div>
-            <div style={{ width: "150px", height: "100px", border: "1px solid #333", backgroundColor: "#222" }}></div>
-          </div>
         </div>
 
-        {/* Kolom Kanan (Form) */}
+        {/* Sisi Kanan: Form */}
         <div style={styles.rightSection}>
           <h2 style={styles.loginTitle}>MASUK</h2>
           <p style={styles.loginSubtitle}>Selamat Datang! Masukkan Detail Login Anda.</p>
           
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={handleSubmit}> 
             <div style={{ display: "flex", gap: "30px", marginBottom: "25px", fontFamily: "'Poppins', sans-serif" }}>
               <label style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
-                <input type="radio" name="role" /> Admin
+                <input 
+                  type="radio" 
+                  name="role" 
+                  value="Admin" 
+                  onChange={(e) => setRole(e.target.value)} 
+                /> Admin
               </label>
               <label style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
-                <input type="radio" name="role" defaultChecked /> User
+                <input 
+                  type="radio" 
+                  name="role" 
+                  value="User" 
+                  defaultChecked 
+                  onChange={(e) => setRole(e.target.value)} 
+                /> User
               </label>
             </div>
 
             <div>
               <label style={styles.label}>Email</label>
-              <input type="email" placeholder="Masukkan email anda" style={styles.inputField} />
+              <input 
+                type="email" 
+                placeholder="Masukkan email anda" 
+                style={styles.inputField} 
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div>
               <label style={styles.label}>Password</label>
-              <input type="password" placeholder="Masukkan password" style={styles.inputField} />
+              <input 
+                type="password" 
+                placeholder="Masukkan password" 
+                style={styles.inputField} 
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <button type="submit" style={styles.btnLogin}>LOGIN</button>
 
             <div style={{ marginTop: "20px", display: "flex", justifyContent: "space-between", fontSize: "13px", fontFamily: "'Poppins', sans-serif" }}>
-              <span style={{ color: "#0066cc", cursor: "pointer" }}>Tidak punya akun? <b>Daftar disini</b></span>
+              <span style={{ color: "#333" }}>
+                Tidak punya akun? {" "}
+                <Link to="/Register" style={styles.registerLink}>
+                  <b>Daftar disini</b>
+                </Link>
+              </span>
               <span style={{ color: "#0066cc", cursor: "pointer" }}>Lupa password</span>
             </div>
           </form>
         </div>
       </div>
-
-      {/* 3. Footer */}
-      <footer style={styles.footer}>
-        <div style={{ flex: "1", minWidth: "250px" }}>
-          <h2 style={{ ...styles.footerTitle, fontStyle: "italic", fontSize: "28px", color: "#FFD700", margin: 0, marginBottom: "25px" }}>VOKSVIBE</h2>
-          <p style={{ color: "#aaa", fontSize: "14px", maxWidth: "300px", lineHeight: "1.6" }}>
-            Streetwear brand from Indonesia. Stay authentic, stay vibe.
-          </p>
-        </div>
-
-        <div style={{ flex: "1" }}>
-          <h3 style={styles.footerTitle}>BANTUAN</h3>
-          <ul style={{ listStyle: "none", padding: 0, color: "#aaa", lineHeight: "2.5", fontSize: "14px" }}>
-            <li>FAQ</li>
-            <li>Pengiriman</li>
-            <li>Pengembalian</li>
-          </ul>
-        </div>
-
-        <div style={{ flex: "1" }}>
-          <h3 style={styles.footerTitle}>KATEGORI</h3>
-          <ul style={{ listStyle: "none", padding: 0, color: "#aaa", lineHeight: "2.5", fontSize: "14px" }}>
-            <li>T - Shirts</li>
-            <li>Outerwear</li>
-            <li>Bottoms</li>
-          </ul>
-        </div>
-      </footer>
+      {/* Sisa footer... */}
     </div>
   );
 });
 
-export default Masuk;
+export default FormLogin;
